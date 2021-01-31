@@ -139,11 +139,10 @@ class Tree(TreeADT):
         node = self._validate(pos)
         return self._make_position(node._parent)
 
-    def children(self, pos: Position) -> List[Position]:
+    def children(self, pos: Position) -> list:
         """ Generate the children of Position pos. """
         node = self._validate(pos)
         return [self._make_position(child) for child in node._children.keys()]
-        # [self._make_position(child) for child in node._children]
 
     def num_children(self, pos: Position) -> int:
         node = self._validate(pos)
@@ -217,7 +216,7 @@ class Tree(TreeADT):
             node._parent = node         # deprecate node.
             return node._element
 
-    def _attach_at(self, pos: Position, tree: Tree) -> None:
+    def _attach_at(self, pos: Position, tree) -> None:
         """ Insert root of 'tree' as child of pos.
             Set tree instance to none after insertion.
         """
