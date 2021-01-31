@@ -9,19 +9,16 @@ class TrieEntry:
         self.endIdx = endIdx
 
 
-class Trie:
+class Trie(Tree):
 
-    __slots__ = '_tree', '_count', '_words'
-
-    # ASCII null termination character. Used to denote end of string.
-    NIL = chr(0)
-
+    __slots__ = '_tree', '_word_count', '_word_dict'
+    # TODO handle insertion pos is root. 
     def __init__(self):
-        self._tree = Tree(None)
-        # Root of tree.
-        self._tree._add(None)
-        self._count = 0
-        self._words = {}
+        super(Trie, self).__init__(TrieEntry(chr(0), 0, 0))
+        self._word_count = 0
+        self._word_dict = {}
+        # ASCII null termination character. Used to denote end of string.
+        self._TERMINATION_CHARACTER = chr(0)
 
     def insert(self, word):
         '''
@@ -29,22 +26,26 @@ class Trie:
         :return:
         '''
         # Insert word into trie dictionary.
-        self._count += 1
-        self._words[self._count] = word
-        pos = self.find_insertion_position(self._tree.root(), word)
-        start = pos.element().startIdx
-        pos_str = self._words[pos.element().key]
+        self._word_count += 1
+        word += self._TERMINATION_CHARACTER
+        self._word_dict[self._word_count] = word
+
+        pos = self.find_insertion_position(self.root(), word)
+
+        pos_entry = pos.element()
+        start = pos_entry.startIdx
+        pos_str = self._word_dict[pos_entry.key]
         # find end index where word[start:end] matches string stored in pos.
         end = start
         while (word[start:end] == pos_str[start:end]):
             end+=1
 
-
-        # create new node
-
-
-
-
+        # create new child of pos to store remainder of existing word.
+        self._add(pos, TrieEntry(pos_entry.key, end, pos_entry.endIdx))
+        # create new child of pos to store remainder of new word.
+        self._add(pos, TrieEntry(self._word_count, end, len(word)))
+        # update pos to contain the shared substring between existing and new word.
+        pos_entry.endIdx = end
 
 
     def find_insertion_position(self, pos, input_string):
@@ -53,9 +54,9 @@ class Trie:
         :param string: The string to insert into the trie.
         :return: The position to insert string into.
         '''
-        for child in self._tree.children(pos):
+        for child in self.children(pos):
             # The string for this position.
-            pos_str = self._words[child.element().key]
+            pos_str = self._word_dict[child.element().key]
             if pos_str[0] == input_string[0]:
                 start = child.element().startIdx
                 end = child.element().endIdx
