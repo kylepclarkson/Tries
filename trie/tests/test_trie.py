@@ -11,8 +11,8 @@ class TestTrie(unittest.TestCase):
         trie.insert("met")
         trie.insert("meat")
         trie.insert("maybe")
-        # trie.insert("may")
-        # trie.insert("adam")
+        trie.insert("may")
+        trie.insert("adam")
         print(f'tree size: {len(trie)}')
         for level in trie.level_traversal():
             print(level)
