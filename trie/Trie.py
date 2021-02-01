@@ -33,7 +33,7 @@ class Trie(Tree):
         pos = self.find_insertion_position(self.root(), word)
         print(f'insert {word}. entry found: {pos.element()}')
         if pos == self.root():
-            self._add(pos, TrieEntry(self._word_count, 0, len(word)))
+            self.add(pos, TrieEntry(self._word_count, 0, len(word)))
         else:
             pos_entry = pos.element()
             start = pos_entry.startIdx
@@ -44,9 +44,9 @@ class Trie(Tree):
                 end += 1
 
             # create new child of pos to store remainder of existing word.
-            self._add(pos, TrieEntry(pos_entry.key, end-1, pos_entry.endIdx))
+            self.add(pos, TrieEntry(pos_entry.key, end-1, pos_entry.endIdx))
             # create new child of pos to store remainder of new word.
-            self._add(pos, TrieEntry(self._word_count, end-1, len(word)))
+            self.add(pos, TrieEntry(self._word_count, end-1, len(word)))
             # update pos to contain the shared substring between existing and new word.
             pos.element().endIdx = end-1
 

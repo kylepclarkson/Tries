@@ -1,3 +1,5 @@
+
+
 class TreeADT:
     """Abstract class for Tree data structure. """
 
@@ -63,6 +65,8 @@ class TreeADT:
     a position to a node instance and a node to a position instance respectively. 
  ==========================================================
 """
+
+
 class Tree(TreeADT):
     class _Node:
         """ A nonpublic wrapper for storing a node. """
@@ -124,7 +128,7 @@ class Tree(TreeADT):
     def __init__(self, e=None):
         """ Create tree with root element e. """
         self._root = None
-        self._add_root(e)
+        self.add_root(e)
 
     def __len__(self) -> int:
         return self._size
@@ -149,7 +153,7 @@ class Tree(TreeADT):
         return len(node._children)
 
     # ================ Insert functions ================
-    def _add_root(self, e) -> Position:
+    def add_root(self, e) -> Position:
         """ Place element e at root of empty tree. """
         if self._root is not None:
             raise ValueError('Root exists')
@@ -158,7 +162,7 @@ class Tree(TreeADT):
         self._root = self._Node(e)
         return self._make_position(self._root)
 
-    def _add(self, pos: Position, e) -> Position:
+    def add(self, pos: Position, e) -> Position:
         """ Create new child for Position pos with element e.
         Return the Position of new node.
         """
@@ -170,7 +174,7 @@ class Tree(TreeADT):
 
         return self._make_position(child)
 
-    def _replace(self, pos: Position, e):
+    def replace(self, pos: Position, e):
         """ Replace element at Position pos with e.
         Return the old element.
         """
@@ -179,7 +183,7 @@ class Tree(TreeADT):
         node._element = e
         return old
 
-    def _remove(self, pos: Position):
+    def remove(self, pos: Position):
         """ Remove the node at Position pos.
         If pos has a single child, make the child's parent pos.
         If pos has more than one child, throw error.
@@ -216,7 +220,7 @@ class Tree(TreeADT):
             node._parent = node         # deprecate node.
             return node._element
 
-    def _attach_at(self, pos: Position, tree) -> None:
+    def attach_at(self, pos: Position, tree) -> None:
         """ Insert root of 'tree' as child of pos.
             Set tree instance to none after insertion.
         """
@@ -234,10 +238,10 @@ class Tree(TreeADT):
             tree._root = None   # set tree instance to none.
             tree._size = 0
 
-    def _delete_tree(self):
+    def delete_tree(self):
         if not self.is_empty():
             for pos in self.postorder():
-                self._remove(pos)
+                self.remove(pos)
 
     # ================ Tree Traversal ================
     def preorder(self):
@@ -264,7 +268,6 @@ class Tree(TreeADT):
             for child_child in self._subtree_postorder(child):
                 yield child_child
         yield pos
-
 
     def bfs(self):
         """ Generate a breadth-first iteration of Positions in tree."""
