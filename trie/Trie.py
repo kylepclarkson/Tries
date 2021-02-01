@@ -42,11 +42,21 @@ class Trie(Tree):
             while word[startIdx:end] == pos_str[startIdx:end]:
                 end += 1
             end -= 1
+
+            """
+                TODO
+                if substring at pos fully matches the corresponding substring of the new word,
+                    just create a new node for the remainder of the new word.
+                Otherwise, need to preform add_between operation, with new node containing the matching substring.
+            """
+
             # insert new node between pos and its parent.
             new_pos = self.add_between(self.parent(pos), pos,
                                        TrieEntry(pos.element().key, pos.element().startIdx, end))
+            # update previous start index.
+            pos.element().startIdx = end
             # insert new node for remainder of new word.
-            self.add(new_pos, TrieEntry(self._word_count, end, len(word)-1))
+            self.add(new_pos, TrieEntry(self._word_count, end, len(word)))
 
 
             # create new child of pos to store remainder of existing word.
