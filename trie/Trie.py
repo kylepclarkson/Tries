@@ -35,28 +35,31 @@ class Trie(Tree):
         if pos == self.root():
             self.add(pos, TrieEntry(self._word_count, 0, len(word)))
         else:
-            startIdx = pos.element().startIdx
+            start = pos.element().startIdx
             pos_str = self._word_dict[pos.element().key]
             # find end index where word[start:end] matches string stored in pos.
-            end = startIdx+1
-            while word[startIdx:end] == pos_str[startIdx:end]:
+            end = start+1
+            while word[start:end] == pos_str[start:end]:
                 end += 1
             end -= 1
-
+            if end == pos.element().endIdx:
+                # The string at pos fully matches insertion word, create a single new position.
+                self.add(pos, TrieEntry(self._word_count, start, end))
+            else:
+                # The string at pos does not fully match, add an between node and new node.
+                # insert new node between pos and its parent.
+                new_pos = self.add_between(self.parent(pos), pos,
+                                           TrieEntry(pos.element().key, pos.element().startIdx, end))
+                # update previous start index.
+                pos.element().startIdx = end
+                # insert new node for remainder of new word.
+                self.add(new_pos, TrieEntry(self._word_count, end, len(word)))
             """
                 TODO
                 if substring at pos fully matches the corresponding substring of the new word,
                     just create a new node for the remainder of the new word.
                 Otherwise, need to preform add_between operation, with new node containing the matching substring.
             """
-
-            # insert new node between pos and its parent.
-            new_pos = self.add_between(self.parent(pos), pos,
-                                       TrieEntry(pos.element().key, pos.element().startIdx, end))
-            # update previous start index.
-            pos.element().startIdx = end
-            # insert new node for remainder of new word.
-            self.add(new_pos, TrieEntry(self._word_count, end, len(word)))
 
 
             # create new child of pos to store remainder of existing word.
