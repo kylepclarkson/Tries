@@ -174,6 +174,35 @@ class Tree(TreeADT):
 
         return self._make_position(child)
 
+    def add_between(self, par_pos: Position, child_pos: Position, e) -> Position:
+        '''
+        Create a new node in between a parent node and a child node.
+        :param par_pos:     The parent position.
+        :param child_pos:   The child position.
+        :param e:           The element to insert
+        :return:            The position of the new node.
+        '''
+
+        parent_node = self._validate(par_pos)
+        child_node = self._validate(child_pos)
+
+        # Check that parent node is indeed parent of child node.
+        if child_node._parent != parent_node:
+            raise ValueError('parent pos is not parent of child pos:', parent_node._element, child_node._element)
+
+        # remove child node from parent node's children
+        del parent_node._children[child_node]
+        # create new between node. Link to existing nodes.
+        between_node = self._Node(e, parent_node)
+        parent_node._children[between_node] = between_node
+        between_node._children[child_node] = child_node
+        child_node._parent = between_node
+        self._size += 1
+        return self._make_position(between_node)
+
+
+
+
     def replace(self, pos: Position, e):
         """ Replace element at Position pos with e.
         Return the old element.

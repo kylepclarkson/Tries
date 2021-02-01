@@ -42,5 +42,21 @@ class TestTree(unittest.TestCase):
         self.assertEqual([x.element() for x in t.bfs()],
                          ['a','b','c','d','e','f','g'])
 
+
+    def test_add_between(self):
+
+        t = Tree('r')
+        r = t.root()
+        a = t.add(r, 'a')
+        b = t.add(a, 'b')
+        c = t.add(a, 'c')
+        d = t.add(a, 'd')
+        e = t.add_between(r, a, 'e')
+        f = t.add(e, 'f')
+        self.assertEqual([x.element() for x in t.bfs()],
+              ['r', 'e', 'a', 'f', 'b', 'c', 'd'])
+        self.assertEqual(len(t), 7)
+        self.assertEqual(t.height(), 3)
+
 if __name__ == '__main__':
     unittest.main()
