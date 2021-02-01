@@ -8,7 +8,7 @@ class TrieEntry:
         self.startIdx = startIdx
         self.endIdx = endIdx
 
-    def __str__(self):
+    def __repr__(self):
         return f'key: {self.key} [{self.startIdx},{self.endIdx}]'
 
 class Trie(Tree):
@@ -35,21 +35,26 @@ class Trie(Tree):
         if pos == self.root():
             self.add(pos, TrieEntry(self._word_count, 0, len(word)))
         else:
-            # TODO if insertion position is not child, add between.
-            pos_entry = pos.element()
-            start = pos_entry.startIdx
-            pos_str = self._word_dict[pos_entry.key]
+            startIdx = pos.element().startIdx
+            pos_str = self._word_dict[pos.element().key]
             # find end index where word[start:end] matches string stored in pos.
-            end = start+1
-            while word[start:end] == pos_str[start:end]:
+            end = startIdx+1
+            while word[startIdx:end] == pos_str[startIdx:end]:
                 end += 1
+            end -= 1
+            # insert new node between pos and its parent.
+            new_pos = self.add_between(self.parent(pos), pos,
+                                       TrieEntry(pos.element().key, pos.element().startIdx, end))
+            # insert new node for remainder of new word.
+            self.add(new_pos, TrieEntry(self._word_count, end, len(word)-1))
+
 
             # create new child of pos to store remainder of existing word.
-            self.add(pos, TrieEntry(pos_entry.key, end-1, pos_entry.endIdx))
-            # create new child of pos to store remainder of new word.
-            self.add(pos, TrieEntry(self._word_count, end-1, len(word)))
-            # update pos to contain the shared substring between existing and new word.
-            pos.element().endIdx = end-1
+            # self.add(pos, TrieEntry(pos_entry.key, end-1, pos_entry.endIdx))
+            # # create new child of pos to store remainder of new word.
+            # self.add(pos, TrieEntry(self._word_count, end-1, len(word)))
+            # # update pos to contain the shared substring between existing and new word.
+            # pos.element().endIdx = end-1
 
 
         self._word_count += 1

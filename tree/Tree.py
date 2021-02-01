@@ -204,9 +204,6 @@ class Tree(TreeADT):
         self._size += 1
         return self._make_position(between_node)
 
-
-
-
     def replace(self, pos: Position, e):
         """ Replace element at Position pos with e.
         Return the old element.
@@ -325,3 +322,18 @@ class Tree(TreeADT):
                 yield pos
                 for child in self.children(pos):
                     stack.append(child)
+
+    def level_traversal(self):
+        """ Return a int-list dictionary where the list
+        at key i contains all nodes at level i of the tree. """
+        level_dict = {}
+        self._level_traversal_helper(level_dict, self.root(), 0)
+        return [level for level in level_dict.values()]
+
+    def _level_traversal_helper(self, level_dict: dict, pos: Position, depth: int):
+        if not depth in level_dict:
+            level_dict[depth] = []
+        if pos not in level_dict[depth]:
+            level_dict[depth].append(pos)
+        for child in self.children(pos):
+            self._level_traversal_helper(level_dict, child, depth+1)
