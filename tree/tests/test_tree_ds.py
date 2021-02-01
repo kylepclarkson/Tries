@@ -58,5 +58,18 @@ class TestTree(unittest.TestCase):
         self.assertEqual(len(t), 7)
         self.assertEqual(t.height(), 3)
 
+    def test_level_order(self):
+        t = Tree('r')
+        r = t.root()
+        a = t.add(r, 'a')
+        b = t.add(a, 'b')
+        c = t.add(a, 'c')
+        d = t.add(a, 'd')
+        e = t.add_between(r, a, 'e')
+        f = t.add(e, 'f')
+
+        self.assertEqual([[x.element() for x in level] for level in t.level_traversal()],
+                         [['r'], ['e'], ['a','f'], ['b', 'c', 'd']])
+
 if __name__ == '__main__':
     unittest.main()
