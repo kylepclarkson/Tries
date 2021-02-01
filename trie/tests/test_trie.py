@@ -13,6 +13,7 @@ class TestTrie(unittest.TestCase):
         trie.insert("maybe")
         trie.insert("may")
         trie.insert("adam")
+        trie.insert("met") # bug inserting same word twice. Trie assumes no word is prefix of another.
         print(f'tree size: {len(trie)}')
         for level in trie.level_traversal():
             print(level)

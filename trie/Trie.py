@@ -1,5 +1,6 @@
 
 from tree.Tree import Tree
+from tree.Tree import Position
 
 class TrieEntry:
 
@@ -21,7 +22,7 @@ class Trie(Tree):
         # ASCII null termination character. Used to denote end of string.
         self._TERMINATION_CHARACTER = chr(0)
 
-    def insert(self, input_word):
+    def insert_word(self, input_word):
         '''
         :param input_word: The word to insert into the tree.
         :return:
@@ -59,6 +60,15 @@ class Trie(Tree):
                 self.add(new_pos, TrieEntry(self._word_count, end, len(input_word)))
 
         self._word_count += 1
+
+    def find_word(self, input_word: str) -> Position:
+        '''
+        Search for the existence of input_word within the trie.
+        :param input_word: The word to search for.
+        :return: The position within the trie that corresponds to this word. None if none exists.
+        '''
+        # TODO
+        pass
 
     def find_insertion_position(self, pos, input_word):
         '''

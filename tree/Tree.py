@@ -65,7 +65,24 @@ class TreeADT:
     a position to a node instance and a node to a position instance respectively. 
  ==========================================================
 """
+# === An abstract representation of a element in the tree.
+class Position(TreeADT.Position):
 
+    def __init__(self, container, node):
+        self._container = container
+        self._node = node
+
+    def element(self):
+        return self._node._element
+
+    def __eq__(self, other):
+        return type(other) is type(self) and other._node is self._node
+
+    def __repr__(self):
+        return str(self._node)
+
+
+# === End Position Class ===
 
 class Tree(TreeADT):
     class _Node:
@@ -83,24 +100,24 @@ class Tree(TreeADT):
             return  str(self._element)
 
     # === An abstract representation of a element in the tree.
-    class Position(TreeADT.Position):
-
-        def __init__(self, container, node):
-            self._container = container
-            self._node = node
-
-        def element(self):
-            return self._node._element
-
-        def __eq__(self, other):
-            return type(other) is type(self) and other._node is self._node
-
-        def __repr__(self):
-            return str(self._node)
+    # class Position(TreeADT.Position):
+    #
+    #     def __init__(self, container, node):
+    #         self._container = container
+    #         self._node = node
+    #
+    #     def element(self):
+    #         return self._node._element
+    #
+    #     def __eq__(self, other):
+    #         return type(other) is type(self) and other._node is self._node
+    #
+    #     def __repr__(self):
+    #         return str(self._node)
     # === End Position Class ===
 
     # ================ Wrapper Functions ================
-    def _validate(self, pos):
+    def _validate(self, pos: Position) -> _Node:
         """Unpack node from position, if it is valid.
         Returns _Node object.
         """
@@ -116,7 +133,7 @@ class Tree(TreeADT):
 
         return pos._node
 
-    def _make_position(self, node):
+    def _make_position(self, node: _Node) -> Position:
         """Pack node into position instance (or None if no node.)
         Returns Position object.
         """
