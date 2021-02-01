@@ -152,6 +152,10 @@ class Tree(TreeADT):
         node = self._validate(pos)
         return len(node._children)
 
+    def is_child(self, pos: Position) -> bool:
+        return self.num_children(pos) == 0
+
+
     # ================ Insert functions ================
     def add_root(self, e) -> Position:
         """ Place element e at root of empty tree. """
