@@ -35,6 +35,7 @@ class Trie(Tree):
         if pos == self.root():
             self.add(pos, TrieEntry(self._word_count, 0, len(word)))
         else:
+            # TODO if insertion position is not child, add between.
             pos_entry = pos.element()
             start = pos_entry.startIdx
             pos_str = self._word_dict[pos_entry.key]
