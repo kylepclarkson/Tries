@@ -67,10 +67,27 @@ class Trie(Tree):
         :param input_word: The word to search for.
         :return: The position within the trie that corresponds to this word. None if none exists.
         '''
-        # TODO
+        return self._find_word(self.root(), input_word+self._TERMINATION_CHARACTER)
         pass
 
-    def find_insertion_position(self, pos, input_word):
+    def _find_word(self, pos: Position, input_word: str):
+
+        for child in self.children(pos):
+            # The string for this position.
+            pos_str = self._word_dict[child.element().key]
+            start = child.element().startIdx
+            end = child.element().endIdx
+
+            if start < len(input_word):
+                if pos_str[start] == input_word[start]:
+                    if pos_str[start:end] == input_word[start:end] and end == len(input_word):
+                        return child
+                    else:
+                        return self._find_word(child, input_word)
+
+        return None
+
+    def find_insertion_position(self, pos: Position, input_word):
         '''
         Determines the position in the trie to insert a new word.
         :param pos: Search for insertion at this position.

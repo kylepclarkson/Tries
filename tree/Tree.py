@@ -137,7 +137,7 @@ class Tree(TreeADT):
         """Pack node into position instance (or None if no node.)
         Returns Position object.
         """
-        return self.Position(self, node) if node is not None else None
+        return Position(self, node) if node is not None else None
     # ================ End wrapper functions ================
 
 
